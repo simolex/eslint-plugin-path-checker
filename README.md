@@ -22,19 +22,16 @@ Add `simolex-plugin-lint` to the plugins section of your `.eslintrc` configurati
 
 ```json
 {
-    "plugins": [
-        "simolex-plugin-lint"
-    ]
+    "plugins": ["simolex-plugin-lint"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
 ```json
 {
     "rules": {
-        "simolex-plugin-lint/rule-name": 2
+        "simolex-plugin-lint/path-checker": 2
     }
 }
 ```
@@ -42,7 +39,7 @@ Then configure the rules you want to use under the rules section.
 ## Rules
 
 <!-- begin auto-generated rules list -->
+
 TODO: Run eslint-doc-generator to generate the rules list.
+
 <!-- end auto-generated rules list -->
-
-
