@@ -9,23 +9,38 @@
 //------------------------------------------------------------------------------
 
 const rule = require("../../../lib/rules/path-checker"),
-  RuleTester = require("eslint").RuleTester;
+    RuleTester = require("eslint").RuleTester;
 
-
+const path = require("node:path");
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
+const aliasOption = {
+    alias: "@",
+};
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+    parserOptions: { ecmaVersion: 6, sourceType: "module" },
+});
 ruleTester.run("path-checker", rule, {
-  valid: [
-    // give me some code that won't trigger a warning
-  ],
+    valid: [
+        {
+            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage"),
+            code: "import { articlePageReducer, getArticles } from '../../model/slices/articlePageSlice'",
+            errors: [],
+        },
+    ],
 
-  invalid: [
-    {
-      code: "weeebeee",
-      errors: [{ message: "Fill me in.", type: "Me too" }],
-    },
-  ],
+    invalid: [
+        {
+            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage"),
+            code: "import { articlePageReducer, getArticles } from '@/pages/ArticlesPage/model/slices/articlePageSlice'",
+            errors: [
+                {
+                    messageId: "onceSliceImportError",
+                },
+            ],
+            options: [aliasOption],
+        },
+    ],
 });

@@ -1,6 +1,6 @@
 {
     "name": "eslint-plugin-simolex-plugin-lint",
-    "version": "0.0.9",
+    "version": "0.0.12",
     "description": "plugin for production project",
     "keywords": [
         "eslint",
@@ -18,6 +18,8 @@
         "update:eslint-docs": "eslint-doc-generator"
     },
     "dependencies": {
+        "generator-eslint": "^4.1.3",
+        "micromatch": "^4.0.5",
         "requireindex": "^1.2.0"
     },
     "devDependencies": {
