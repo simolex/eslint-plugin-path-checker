@@ -33,7 +33,7 @@ ruleTester.run("path-checker", rule, {
             code: "import { articlePageReducer, getArticles } from '@/pages/ArticlesPage/model/slices/articlePageSlice'",
             errors: [
                 {
-                    message: rule.meta.messages.onceSliceImportError,
+                    messageId: "onceSliceImportError",
                 },
             ],
             options: [
