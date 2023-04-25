@@ -15,6 +15,10 @@ const path = require("node:path");
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
+const aliasOption = {
+    alias: "@",
+};
+
 const ruleTester = new RuleTester({
     parserOptions: { ecmaVersion: 6, sourceType: "module" },
 });
@@ -36,11 +40,7 @@ ruleTester.run("path-checker", rule, {
                     messageId: "onceSliceImportError",
                 },
             ],
-            options: [
-                {
-                    alias: "@",
-                },
-            ],
+            options: [aliasOption],
         },
     ],
 });
