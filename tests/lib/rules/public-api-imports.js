@@ -11,11 +11,14 @@
 const rule = require("../../../lib/rules/public-api-imports"),
     RuleTester = require("eslint").RuleTester;
 
+const path = require("node:path");
+
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
-const aliasOption = {
+const schemaOptions = {
     alias: "@",
+    testFilesPatterns: ["**/*.test.*", "**/*.story.*", "**/StoreDecorator.tsx"],
 };
 
 const ruleTester = new RuleTester({
@@ -30,7 +33,19 @@ ruleTester.run("public-api-imports", rule, {
         {
             code: "import { ArticleListItem } from '@/entities/ArticleListItem'",
             errors: [],
-            options: [aliasOption],
+            options: [schemaOptions],
+        },
+        {
+            filename: path.resolve("src", "entities\\file.test.ts"),
+            code: "import { ArticleListItem } from '@/entities/Article/testing'",
+            errors: [],
+            options: [schemaOptions],
+        },
+        {
+            filename: path.resolve("src", "entities\\StoreDecorator.tsx"),
+            code: "import { ArticleListItem } from '@/entities/Article/testing'",
+            errors: [],
+            options: [schemaOptions],
         },
     ],
 
@@ -38,7 +53,19 @@ ruleTester.run("public-api-imports", rule, {
         {
             code: "import { Article, ArticleView } from '@/entities/Article/model/types/article'",
             errors: [{ messageId: "publicApiImportsError" }],
-            options: [aliasOption],
+            options: [schemaOptions],
+        },
+        {
+            filename: path.resolve("src", "entities\\StoreDecorator.tsx"),
+            code: "import { Article, ArticleView } from '@/entities/Article/testing/file.test'",
+            errors: [{ messageId: "publicApiImportsError" }],
+            options: [schemaOptions],
+        },
+        {
+            filename: path.resolve("src", "entities\\forbidden.ts"),
+            code: "import { Article, ArticleView } from '@/entities/Article/testing'",
+            errors: [{ messageId: "TestingPublicApiImportsError" }], //
+            options: [schemaOptions],
         },
     ],
 });
