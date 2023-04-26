@@ -64,7 +64,7 @@ ruleTester.run("public-api-imports", rule, {
         {
             filename: path.resolve("src", "entities\\forbidden.ts"),
             code: "import { Article, ArticleView } from '@/entities/Article/testing'",
-            errors: [{ messageId: "TestingPublicApiImportsError" }], //
+            errors: [{ messageId: "testingPublicApiImportsError" }], //
             options: [schemaOptions]
         }
     ]
