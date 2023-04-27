@@ -18,54 +18,57 @@ const path = require("node:path");
 //------------------------------------------------------------------------------
 const schemaOptions = {
     alias: "@",
-    testFilesPatterns: ["**/*.test.*", "**/*.story.*", "**/StoreDecorator.tsx"]
+    testFilesPatterns: ["**/*.test.*", "**/*.story.*", "**/StoreDecorator.tsx"],
 };
 
 const ruleTester = new RuleTester({
-    parserOptions: { ecmaVersion: 6, sourceType: "module" }
+    parserOptions: { ecmaVersion: 6, sourceType: "module" },
 });
 ruleTester.run("public-api-imports", rule, {
     valid: [
         {
             code: "import { ArticleListItem } from '../ArticleListItem/ArticleListItem'",
-            errors: []
+            errors: [],
         },
         {
             code: "import { ArticleListItem } from '@/entities/ArticleListItem'",
             errors: [],
-            options: [schemaOptions]
+            options: [schemaOptions],
         },
         {
             filename: path.resolve("src", "entities\\file.test.ts"),
             code: "import { ArticleListItem } from '@/entities/Article/testing'",
             errors: [],
-            options: [schemaOptions]
+            options: [schemaOptions],
         },
         {
             filename: path.resolve("src", "entities\\StoreDecorator.tsx"),
             code: "import { ArticleListItem } from '@/entities/Article/testing'",
             errors: [],
-            options: [schemaOptions]
-        }
+            options: [schemaOptions],
+        },
     ],
 
     invalid: [
         {
             code: "import { Article, ArticleView } from '@/entities/Article/model/types/article'",
+            output: "import { Article, ArticleView } from '@/entities/Article'",
             errors: [{ messageId: "publicApiImportsError" }],
-            options: [schemaOptions]
+            options: [schemaOptions],
         },
         {
             filename: path.resolve("src", "entities\\StoreDecorator.tsx"),
             code: "import { Article, ArticleView } from '@/entities/Article/testing/file.test'",
+            output: "import { Article, ArticleView } from '@/entities/Article'",
             errors: [{ messageId: "publicApiImportsError" }],
-            options: [schemaOptions]
+            options: [schemaOptions],
         },
         {
             filename: path.resolve("src", "entities\\forbidden.ts"),
             code: "import { Article, ArticleView } from '@/entities/Article/testing'",
-            errors: [{ messageId: "testingPublicApiImportsError" }], //
-            options: [schemaOptions]
-        }
-    ]
+            output: null,
+            errors: [{ messageId: "testingPublicApiImportsError" }],
+            options: [schemaOptions],
+        },
+    ],
 });
