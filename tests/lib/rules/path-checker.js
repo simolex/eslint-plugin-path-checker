@@ -16,31 +16,43 @@ const path = require("node:path");
 // Tests
 //------------------------------------------------------------------------------
 const aliasOption = {
-    alias: "@",
+    alias: "@"
 };
 
 const ruleTester = new RuleTester({
-    parserOptions: { ecmaVersion: 6, sourceType: "module" },
+    parserOptions: { ecmaVersion: 6, sourceType: "module" }
 });
 ruleTester.run("path-checker", rule, {
     valid: [
         {
-            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage"),
+            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage.tsx"),
             code: "import { articlePageReducer, getArticles } from '../../model/slices/articlePageSlice'",
-            errors: [],
-        },
+            errors: []
+        }
     ],
 
     invalid: [
         {
-            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage"),
+            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage.tsx"),
             code: "import { articlePageReducer, getArticles } from '@/pages/ArticlesPage/model/slices/articlePageSlice'",
+            output: "import { articlePageReducer, getArticles } from '../../model/slices/articlePageSlice'",
             errors: [
                 {
-                    messageId: "onceSliceImportError",
-                },
+                    messageId: "onceSliceImportError"
+                }
             ],
-            options: [aliasOption],
+            options: [aliasOption]
         },
-    ],
+        {
+            filename: path.resolve("src", "pages\\ArticlesPage\\ui\\ArticlesPage\\ArticlesPage.tsx"),
+            code: "import { articlePageReducer, getArticles } from '@/pages/ArticlesPage/ui/ArticlesPage/ArticlesPage.lazy'",
+            output: "import { articlePageReducer, getArticles } from './ArticlesPage.lazy'",
+            errors: [
+                {
+                    messageId: "onceSliceImportError"
+                }
+            ],
+            options: [aliasOption]
+        }
+    ]
 });
